@@ -1,3 +1,4 @@
+import re
 from tkinter import *
 from tkinter.ttk import *
 
@@ -12,34 +13,67 @@ operation = ''
 
 def showTxtBtn(namBtn):
     global operation
-    txtBtn = namBtn['text']
-    operation += txtBtn
-    strInput.set(operation)
+    try:
+        txtBtn = namBtn['text']
+        operation += txtBtn
+        strInput.set(operation)
+
+    except:
+        print("something went wrong")
+        operation = ''
 
 
 def doIt():
     global operation
-    sum = str(eval(operation))
-    strInput.set(sum)
-    operation = ''
+    try:
+        sum = str(eval(operation))
+        strInput.set(sum)
+        operation = ''
+    except:
+        operation = ''
 
 
 def toThePowerOfNumber():
     global operation
-    operation = operation + '**2'
-    toPower = str(eval(operation))
-    strInput.set(toPower)
-    operation = ''
+    try:
+        operation = operation + '**2'
+        toPower = str(eval(operation))
+        strInput.set(toPower)
+        operation = ''
+    except:
+        operation = ''
+
 
 def delete():
-
     strInput.set('')
+
 
 def divideOneToNum():
     global operation
-    operation = str('1/'+ operation)
-    strInput.set(str(eval(operation)))
-    operation = ''
+    try:
+        operation = str('1/' + operation)
+        strInput.set(str(eval(operation)))
+        operation = ''
+    except:
+        print('Just Once')
+        operation = ''
+
+
+def toPositiveOrminusInp():
+    global operation
+    try:
+        print(operation[0])
+        if not operation[0] == '-':
+            operation = '-' + operation
+            strInput.set(str(operation))
+
+        elif operation[0] == '-':
+            operation = operation.removeprefix('-')
+            strInput.set(operation)
+
+    except:
+        operation = ''
+
 
 # -------------------------------------------------------------------------------------------------
 
@@ -75,30 +109,30 @@ numEight = Button(self, text='8', width=widtheBtnNum, command=lambda: showTxtBtn
 numEight.grid(column=2, row=6)
 numNine = Button(self, text='9', width=widtheBtnNum, command=lambda: showTxtBtn(numNine))
 numNine.grid(column=3, row=6)
-numBackSlash = Button(self, text='/', width=widtheBtnNum, command=lambda: showTxtBtn(numBackSlash))
+numBackSlash = Button(self, text='.', width=widtheBtnNum, command=lambda: showTxtBtn(numBackSlash))
 numBackSlash.grid(column=3, row=9)
 numZero = Button(self, text='0', width=widtheBtnNum, command=lambda: showTxtBtn(numZero))
 numZero.grid(column=2, row=9)
 
 # btn (delete)
-btnDel = Button(self, text='Del', width=widtheBtnNum, command=lambda : delete())
-btnDel.grid(column=4, row=4)
+btnDel = Button(self, text='Del', width=widtheBtnNum, command=lambda: delete())
+btnDel.grid(column=4, row=5)
 
 # btn (c)
-btnC = Button(self, text='', width=widtheBtnNum)
-btnC.grid(column=3, row=4)
+# btnC = Button(self, text='', width=widtheBtnNum)
+# btnC.grid(column=3, row=4)
 
 # btn (ce)
-btnCE = Button(self, text='', width=widtheBtnNum)
-btnCE.grid(column=2, row=4)
+# btnCE = Button(self, text='', width=widtheBtnNum)
+# btnCE.grid(column=2, row=4)
 
-# btn (percent)
-btnPerecent = Button(self, text='%', width=widtheBtnNum, command=lambda: showTxtBtn(btnPerecent))
-btnPerecent.grid(column=1, row=4, )
+# # btn (percent)
+# btnPerecent = Button(self, text='%', width=widtheBtnNum, command=lambda: showTxtBtn(btnPerecent))
+# btnPerecent.grid(column=1, row=4, )
 
 # btn (divide)
-btnDivide = Button(self, text='', width=widtheBtnNum, command=lambda: showTxtBtn(btnDivide))
-btnDivide.grid(column=4, row=5)
+# btnDivide = Button(self, text='', width=widtheBtnNum, command=lambda: showTxtBtn(btnDivide))
+# btnDivide.grid(column=4, row=5)
 
 # btn (multiplication)
 btnMulti = Button(self, text='*', width=widtheBtnNum, command=lambda: showTxtBtn(btnMulti))
@@ -113,7 +147,7 @@ btnPlus = Button(self, text='+', width=widtheBtnNum, command=lambda: showTxtBtn(
 btnPlus.grid(column=4, row=8)
 
 # btn (Turn to minus or positive)
-btnTurnMinusOrPositive = Button(self, text='-/+', width=widtheBtnNum)
+btnTurnMinusOrPositive = Button(self, text='-/+', width=widtheBtnNum, command=lambda: toPositiveOrminusInp())
 btnTurnMinusOrPositive.grid(column=1, row=9)
 
 # btn (DivideOnetoNumber)
@@ -121,7 +155,7 @@ btnDivideOnetoNumber = Button(self, text='1/n', width=widtheBtnNum, command=lamb
 btnDivideOnetoNumber.grid(column=1, row=5)
 
 # btn (Logarithm of two)
-btnLogarithmOfTwo = Button(self, text=' ', width=widtheBtnNum)
+btnLogarithmOfTwo = Button(self, text='/ ', width=widtheBtnNum)
 btnLogarithmOfTwo.grid(column=3, row=5)
 
 # btn (PowerTwo)
@@ -133,7 +167,7 @@ btnEqual = Button(self, text='=', width=widtheBtnNum, command=doIt)
 btnEqual.grid(column=4, row=9)
 
 # # make Button with loop
-#
+
 # operNumFirstClm = {'percent':'%', 'btnDivideOnetoNumber':'1/n', 'numSeven':'7',  'numFour':'4','numOne': '1', 'btnTurnMinusOrPositive':'-/+'}
 # operNumSecondClm = {'btnCE':'CE', 'btnPowerTwo':'n to the power of two', 'numEight':'8',  'numFive': '5',  'numTwo': '2',  'numZero': '0'}
 # operNumThirdClm = {'btnC':'C', 'btnTheRootN':'the root n', 'numSeven':'7', 'numFour':'4', 'numOne':'1', '-/+'}
